@@ -8,9 +8,9 @@
 		Home
 	</a>
 	<a
-		href="/print"
+		href="/save"
 		class="nav-link"
-		class:active={page.url.pathname === "/print"}>Print</a
+		class:active={page.url.pathname === "/save"}>Save</a
 	>
 	<a
 		href="/about"

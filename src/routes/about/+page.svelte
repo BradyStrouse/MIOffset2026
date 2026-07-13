@@ -1,3 +1,9 @@
+<script>
+	import { usePermalink } from "$lib/utils/linkHandler.svelte.js";
+
+	usePermalink({ run: false });
+</script>
+
 <!-- Intro & Description -->
 <div class="about-container">
 	<div class="hero">

@@ -1,19 +1,13 @@
 <script>
-	import { onMount } from "svelte";
 	import MapView from "$lib/components/location/MapView.svelte";
 	import EntriesTable from "$lib/components/entries/EntriesTable.svelte";
 	import FootprintTable from "$lib/components/results/FootprintTable.svelte";
-	import { appState, entries } from "$lib/state/appState.svelte.js";
-	import { getAndRun } from "$lib/utils/model/runModel.svelte.ts";
+	import { appState } from "$lib/state/appState.svelte.js";
 	import { LATLNG_PRECISION } from "$lib/state/defaultValues.svelte.js";
+	import { usePermalink } from "$lib/utils/linkHandler.svelte.js";
+	import shpwrite from "@mapbox/shp-write";
 
-	// MapView's stale effect resets mapIsUpToDate on mount, so re-assert it if a
-	// footprint was already generated before navigating to this page.
-	onMount(() => {
-		if (appState.geoJSONData?.outputs) {
-			getAndRun();
-		}
-	});
+	usePermalink();
 
 	function toggleMarker(lat, lng) {
 		console.log({ lat, lng });
@@ -25,11 +19,33 @@
 		month: "long",
 		day: "numeric",
 	});
+
+	async function downloadShapefile() {
+		const geojson = appState.geoJSONData.outputs.map.data;
+		console.log(geojson)
+		const blob = await shpwrite.zip(geojson, {
+			folder: "odor_footprint",
+			filename: "odor_footprint",
+			outputType: "blob",
+			types: { polygon: "odor_footprint" },
+		});
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = "odor_footprint.zip";
+		a.click();
+		URL.revokeObjectURL(url);
+	}
 </script>
 
 <div class="print-page">
 	<!-- Screen-only controls -->
 	<div class="screen-only toolbar">
+		<button
+			class="print-btn"
+			onclick={downloadShapefile}
+			disabled={!appState.geoJSONData?.outputs}
+		>Download Shapefile</button>
 		<button class="print-btn" onclick={() => window.print()}
 			>Print / Save as PDF</button
 		>
@@ -111,11 +127,11 @@
 	.toolbar {
 		display: flex;
 		justify-content: flex-end;
+		gap: 1rem;
 	}
 
-	.print-btn {
-		background-color: var(--color-spartan-green);
-		color: white;
+	.print-btn,
+	.shapefile-btn {
 		border: none;
 		border-radius: 4px;
 		padding: 0.6rem 1.2rem;
@@ -126,8 +142,27 @@
 		transition: background-color 0.2s;
 	}
 
+	.print-btn {
+		background-color: var(--color-spartan-green);
+		color: white;
+	}
+
 	.print-btn:hover {
 		background-color: #0f2e26;
+	}
+
+	.shapefile-btn {
+		background-color: #1565c0;
+		color: white;
+	}
+
+	.shapefile-btn:hover:not(:disabled) {
+		background-color: #0d47a1;
+	}
+
+	.shapefile-btn:disabled {
+		background-color: #90a4ae;
+		cursor: not-allowed;
 	}
 
 	.report-wrapper {

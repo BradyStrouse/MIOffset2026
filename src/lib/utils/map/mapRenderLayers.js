@@ -43,8 +43,8 @@ export async function renderGEOJSON(map, showLegend = false) {
 		geoJSONLayer._legend = createLegend(map, legendEntries);
 
 	// centers the json bounds on the map view, interrupting any in-progress animation
-	map.stop();
-	map.fitBounds(geoJSONLayer.getBounds());
+	// map.stop();
+	// map.fitBounds(geoJSONLayer.getBounds());
 	return geoJSONLayer;
 }
 

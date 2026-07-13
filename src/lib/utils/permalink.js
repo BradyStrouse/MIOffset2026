@@ -18,7 +18,7 @@ function b64Decode(str) {
  */
 export function encodeState(entries, location) {
 	const data = {
-		loc: [location.lat, location.lng],
+		loc: [location.lat, location.lng, location.address],
 		e: entries.map((entry) => {
 			const e = { ft: entry.formType };
 			if (entry.species != null) e.sp = entry.species;
@@ -42,7 +42,7 @@ export function encodeState(entries, location) {
 export function decodeState(encoded) {
 	try {
 		const parsed = JSON.parse(b64Decode(encoded));
-		const location = { lat: parsed.loc[0], lng: parsed.loc[1] };
+		const location = { lat: parsed.loc[0], lng: parsed.loc[1], address: parsed.loc[2] };
 
 		const entries = (parsed.e || []).map((e) => {
 			const {
@@ -100,9 +100,9 @@ export function decodeState(encoded) {
 				oenRate,
 				odorControlFactor,
 				totalEmission,
-				location: { lat: location.lat, lng: location.lng, address: "" },
+				location: { lat: location.lat, lng: location.lng, address: location.address },
 				snapshot: {
-					location: { ...location, address: "" },
+					location: { ...location, address: location.address },
 					formDraft,
 					activeForm: formType,
 				},

@@ -25,7 +25,7 @@
 				/>
 
 				{#if form?.incorrect}
-					<p class="error">Incorrect passphrase. Please try <b>again</b></p>
+					<p class="error">Incorrect passphrase. Please try again</p>
 				{/if}
 
 				<button type="submit">Enter</button>

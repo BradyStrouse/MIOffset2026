@@ -8,8 +8,8 @@
 // export const DEFAULT_LNG = -84.472938;
 
 // TODO: GEOJSON TESTING VARIABLES, REMOVE
-export const DEFAULT_LAT = 43.14319;
-export const DEFAULT_LNG = -84.23689;
+export const DEFAULT_LAT = 42;
+export const DEFAULT_LNG = -84;
 
 export const DEFAULT_ZOOM = 6.5;
 export const MIN_ZOOM = 7;

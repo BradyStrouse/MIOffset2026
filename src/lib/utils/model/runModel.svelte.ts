@@ -33,8 +33,19 @@ let errorMsg = $state("");
 
 // Each of the 80 model rows corresponds to a bearing at 4.5° increments
 // clockwise from North (row 0 = N = 0°, row 5 = NNE = 22.5°, …).
-const ROW_BEARINGS = Array.from({ length: 80 }, (_, i) => i * 4.5);
+const ROW_BEARINGS = Array.from({ length: 80 }, (_, i) => i * 4.5 + 4.5);
 
+/**
+ * Converts raw model output into the GeoJSON FeatureCollection and plain-text
+ * setback table that the rest of the app consumes.
+ *
+ * Each of the three threshold frequencies (1.5 %, 3 %, 5 %) becomes a separate
+ * Polygon feature whose vertices are the geodetic destination points computed
+ * by walking every one of the 80 bearing rows out to the model's predicted
+ * setback distance.  The resulting object is written to appState.geoJSONData
+ * and drives both the map layer (outputs.map.data) and the FootprintTable
+ * component (outputs.table.data).
+ */
 function buildGeoJSONData(
 	result: ModelOutput,
 	lat: number,
@@ -80,14 +91,34 @@ function buildGeoJSONData(
 	};
 }
 
+// ── wind data cache ───────────────────────────────────────────────────────
+
+const WIND_CACHE_SIZE = 10;
+const windCache = new Map<string, WindDataRecord>();
+const windCacheOrder: string[] = [];
+
 // ── internal helpers ──────────────────────────────────────────────────────
 
+/**
+ * Finds the reanalysis grid cell (gridX, gridY) closest to the current lat/lng and
+ * stores it in module state.  Must be called before fetchWindData() so the
+ * correct grid coordinates are used when building the S3 request URL.
+ */
 function updateGridCoords() {
 	const result = closestGridPoint(Lat, Lon);
 	gridX = result[0];
 	gridY = result[1];
 }
 
+/**
+ * Fetches historical wind data for the current grid cell from the /api/wind
+ * endpoint and stores it in the module-level windData reactive variable.
+ *
+ * Results are cached by grid coordinates (up to WIND_CACHE_SIZE entries) so
+ * that navigating back to a previously visited location avoids a redundant
+ * network round-trip.  On error, sets errorMsg and leaves windData null so
+ * the caller can bail out cleanly.
+ */
 async function fetchWindData() {
 	errorMsg = "";
 	windData = null;
@@ -104,6 +135,12 @@ async function fetchWindData() {
 		return;
 	}
 
+	const cacheKey = `${x},${y}`;
+	if (windCache.has(cacheKey)) {
+		windData = windCache.get(cacheKey)!;
+		return;
+	}
+
 	try {
 		const res = await fetch(`/api/wind?x=${x}&y=${y}`);
 		const body = await res.json();
@@ -112,12 +149,26 @@ async function fetchWindData() {
 			return;
 		}
 		windData = body as WindDataRecord;
+
+		windCache.set(cacheKey, windData);
+		windCacheOrder.push(cacheKey);
+		if (windCacheOrder.length > WIND_CACHE_SIZE) {
+			windCache.delete(windCacheOrder.shift()!);
+		}
 	} catch (err) {
 		errorMsg =
 			err instanceof Error ? err.message : "Unknown error fetching data.";
 	}
 }
 
+/**
+ * Runs the synchronous FOD odor dispersion model on a background task queue
+ * tick so the browser can repaint (e.g. show a loading spinner) before the
+ * heavy computation blocks the main thread.
+ *
+ * Returns the model output, or null if wind data is unavailable or the model
+ * throws.
+ */
 function runModelDeferred(E: number): Promise<ModelOutput | null> {
 	const data = flattenedByDataset;
 	if (!data) return Promise.resolve(null);
@@ -140,9 +191,15 @@ function runModelDeferred(E: number): Promise<ModelOutput | null> {
 // ── public API ────────────────────────────────────────────────────────────
 
 /**
- * Fetches wind data for the current location, runs the local FOD model,
- * and writes the result into appState.geoJSONData in the shape the rest
- * of the app expects (outputs.map.data and outputs.table.data).
+ * Main entry point for running the odor footprint model.
+ *
+ * Orchestrates the full pipeline: resolve the grid cell → fetch wind data →
+ * run the FOD model → write GeoJSON output to appState.  Sets mapLoading
+ * during the run and mapIsUpToDate when complete so reactive consumers
+ * (MapView, FootprintTable) update automatically.
+ *
+ * Returns immediately if the map is already up to date or if total emission
+ * is zero (nothing to model).
  */
 export async function getAndRun() {
 	if (appState.mapIsUpToDate) return;

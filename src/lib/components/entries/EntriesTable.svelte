@@ -1,7 +1,6 @@
 <script>
 	// --- Imports ---
 	import { appState, entries } from "$lib/state/appState.svelte.js";
-	import { getAndRun } from "$lib/utils/model/runModel.svelte.ts";
 
 	let { interactive = true } = $props();
 	// --- Actions ---
@@ -36,11 +35,6 @@
 			<span class="entry-count"
 				>{entries.length} {entries.length === 1 ? "entry" : "entries"}</span
 			>
-			<div class="submission-btn">
-				<button class="btn-footprint" onclick={getAndRun}
-					>Show Footprint</button
-				>
-			</div>
 		</div>
 	</div>
 	<!-- Data Table -->
@@ -136,35 +130,6 @@
 		font-size: 0.9rem;
 	}
 
-	/* Submit Button */
-	.submission-btn {
-		display: flex;
-		/* margin-top: 0.5rem; */
-		margin-left: auto;
-		min-width: 170px;
-	}
-	.btn-footprint {
-		padding: 0.5rem 1rem;
-		border: none;
-		border-radius: 4px;
-		font-size: 1rem;
-		font-weight: 600;
-		cursor: pointer;
-		background-color: var(--color-kelly-green);
-		color: white;
-		text-transform: uppercase;
-		letter-spacing: 0.5px;
-		transition: all 0.3s ease;
-	}
-	.btn-footprint:hover {
-		background-color: #008934;
-		box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-		transform: scaleX(1.03);
-	}
-	.btn-footprint:active {
-		background-color: #008934;
-		transform: translateY(1px);
-	}
 	/* Table */
 	.table-wrapper {
 		overflow-x: auto;

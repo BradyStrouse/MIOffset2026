@@ -9,6 +9,7 @@ const DEFAULT_DRAFTS = {
 // --- State ---
 export const appState = $state({
 	location: { ...DEFAULT_LOCATION },
+	manualAddress: false,
 	formDrafts: {
 		animal: { ...DEFAULT_EMISSION },
 		storage: { ...DEFAULT_EMISSION },

@@ -30,11 +30,12 @@
 
 			const data = await res.json();
 			const results = data.results || [];
-			if (results.length > 0 || results.address.countrySubdivisionName === "Michigan") {
+			if (results.length > 0) {
 				appState.location.fly = true;
 				appState.location.lat = parseFloat(results[0].position.lat);
 				appState.location.lng = parseFloat(results[0].position.lon);
 				appState.location.address = results[0].address.freeformAddress ?? appState.location.address;
+				appState.manualAddress = true;
 				appState.location.markerHidden = false;
 			} else {
 				noResults = true;

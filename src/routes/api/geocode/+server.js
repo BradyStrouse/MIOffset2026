@@ -16,7 +16,7 @@ export async function GET({ url }) {
 
 	try {
 		const res = await fetch(
-			`https://${tomtomURL}/search/${apiVersion}/geocode/${encodeURIComponent(query)}.json?key=${TOMTOM_API_KEY}`,
+			`https://${tomtomURL}/search/${apiVersion}/geocode/${encodeURIComponent(query)}.json?key=${TOMTOM_API_KEY}&countrySet=US`,
 			{ headers: { "User-Agent": "Enviroweather/1.0" } },
 		);
 		if (!res.ok) {
@@ -24,6 +24,7 @@ export async function GET({ url }) {
 		}
 
 		const data = await res.json();
+		console.log(data);
 		return json(data);
 	} catch (error) {
 		console.error("Geocoding error:", error);

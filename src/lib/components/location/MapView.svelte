@@ -1,6 +1,6 @@
 <script>
 	// --- Imports ---
-	import { onMount, onDestroy, untrack } from "svelte";
+	import { onMount, onDestroy, untrack, tick } from "svelte";
 	import { appState, entries } from "$lib/state/appState.svelte.js";
 	import { mapIcons, resolveMarkerIcon } from "$lib/state/mapIcons.svelte.js";
 	import { reverseGeocode } from "$lib/utils/map/reverseGeocode.js";
@@ -12,6 +12,7 @@
 	import LocationSelection from "./LocationSelection.svelte";
 	import { renderGEOJSON } from "$lib/utils/map/mapRenderLayers.js";
 	import LoadingIcon from "../common/LoadingIcon.svelte";
+	import { getAndRun } from "$lib/utils/model/runModel.svelte.ts";
 
 	// --- Props & State ---
 	let {
@@ -40,12 +41,12 @@
 	let mapContainer = $state(null);
 	let map = $state.raw(null);
 	let locOverlay = $state(null);
-	let footprintLoading = $derived(appState.mapLoading);
 	// Plain booleans, deliberately NOT $state - mutating them must not re-trigger the effects
 	// that read them.
 	let marker;
 	let geoJSONLayer;
 	let initialized = false;
+	let fittedOnMount = false;
 	let mapEffectBehind = false;
 
 	// --- Lifecycle ---
@@ -92,31 +93,25 @@
 			L.DomEvent.disableScrollPropagation(locOverlay);
 		}
 	}
-
-	// Extremely simple function that makes sure the lat lng are inside the michigan box
-	function validLatLng(lat, lng) {
-		console.log("lat: " + lat);
-		console.log("lng: " + lng);
-		return (
-			(lng >= -.573 && lng <= -82.413) && (lat >= 41.696 && lat <= 46.306)
-		);
-	}
 	function registerMapEvents() {
 		if (!interactive) return;
 
 		map.on("click", (e) => {
 			const { lat, lng } = e.latlng;
-			console.log(validLatLng(lat, lng));
-			if (!validLatLng(lat, lng)) {
-				console.error("Clicked is not inside of michigan");
-			}
 			appState.location.fly = true;
 			appState.location.lat = lat;
 			appState.location.lng = lng;
-			appState.location.address = "";
 			appState.location.markerHidden = false;
 
+			clearGeoJSONLayer(geoJSONLayer);
 			onLocationSelect({ lat, lng });
+
+			if (!appState.manualAddress) {
+				reverseGeocode(lat, lng).then((address) => {
+					if (address !== null && !appState.manualAddress)
+						appState.location.address = address;
+				});
+			}
 		});
 		map.on("zoom", () => {
 			appState.location.zoom = map.getZoom();
@@ -127,6 +122,11 @@
 	async function showGeoJSONLayer() {
 		clearGeoJSONLayer();
 		geoJSONLayer = await renderGEOJSON(map, showLegend);
+		if (focusOnMount && !fittedOnMount && geoJSONLayer) {
+			map.stop();
+			map.fitBounds(geoJSONLayer.getBounds(), { padding: [20, 20], animate: false });
+			fittedOnMount = true;
+		}
 		appState.mapLoading = false;
 	}
 
@@ -174,6 +174,11 @@
 		return () => observer.disconnect();
 	});
 
+	// Clear manualAddress flag when address is emptied so reverse geocode resumes
+	$effect(() => {
+		if (!appState.location.address) appState.manualAddress = false;
+	});
+
 	// Show/hide GeoJSON layer based on whether results are up to date
 	$effect(() => {
 		if (!map) return;
@@ -182,10 +187,11 @@
 		}
 	});
 
-	// Mark results stale whenever entries or the selected location change.
+	// Mark results stale and auto-run model whenever entries, total OEF, or location change.
 	$effect(() => {
 		// `void expr` is the Svelte 5 idiom for "track this as a dependency without using the value."
 		void entries.length;
+		void entries.reduce((sum, e) => sum + (e.totalEmission ?? 0), 0);
 		void appState.location.lat;
 		void appState.location.lng;
 
@@ -197,6 +203,15 @@
 			return;
 		}
 		appState.mapIsUpToDate = false;
+		untrack(() => {
+			if (appState.location.fly && map) {
+				// setTimeout(0) defers past map.stop() in navigateToLocation, which fires
+				// moveend synchronously and would trigger the listener too early.
+				setTimeout(() => map.once("moveend", () => getAndRun()), 0);
+			} else {
+				getAndRun();
+			}
+		});
 	});
 
 	// Sync marker position, icon, and camera with appState
@@ -211,11 +226,12 @@
 		untrack(() => {
 			appState.location.fly = false;
 		});
-		placeOrUpdateMarker(lat, lng, resolveMarkerIcon(L, currentSpecies, appState.mapIsUpToDate));
-		reverseGeocode(lat, lng).then((address) => {
-			if (address !== null) appState.location.address = address;
-		});
-		
+		placeOrUpdateMarker(
+			lat,
+			lng,
+			resolveMarkerIcon(L, currentSpecies, appState.mapIsUpToDate),
+		);
+
 		// skip navigation on first placement unless focusOnMount is set
 		if (!initialized) {
 			initialized = true;
@@ -231,7 +247,7 @@
 	<div
 		bind:this={mapContainer}
 		class="map"
-		class:blurred={footprintLoading || appState.location.searching}
+		class:blurred={appState.location.searching}
 	>
 		<!-- Location Overlay -->
 		{#if enableNav}
@@ -241,7 +257,7 @@
 		{/if}
 	</div>
 
-	{#if footprintLoading || appState.location.searching}
+	{#if appState.location.searching}
 		<div class="loading-overlay">
 			<LoadingIcon />
 		</div>
