@@ -28,15 +28,34 @@
 		const w = geodeticDistance(lat, lon, HALF, 270);
 		return {
 			type: "FeatureCollection",
-			features: [{
-				type: "Feature",
-				properties: { name: "Source Location" },
-				geometry: {
-					type: "Polygon",
-					coordinates: [[[e.lon, n.lat], [e.lon, s.lat], [w.lon, s.lat], [w.lon, n.lat], [e.lon, n.lat]]],
+			features: [
+				{
+					type: "Feature",
+					properties: { name: "Source Location" },
+					geometry: {
+						type: "Polygon",
+						coordinates: [
+							[
+								[e.lon, n.lat],
+								[e.lon, s.lat],
+								[w.lon, s.lat],
+								[w.lon, n.lat],
+								[e.lon, n.lat],
+							],
+						],
+					},
 				},
-			}],
+			],
 		};
+	}
+
+	function downloadBlob(blob, filename) {
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = filename;
+		a.click();
+		URL.revokeObjectURL(url);
 	}
 
 	async function downloadShapefile() {
@@ -67,12 +86,81 @@
 		}
 
 		const blob = await merged.generateAsync({ type: "blob" });
-		const url = URL.createObjectURL(blob);
-		const a = document.createElement("a");
-		a.href = url;
-		a.download = "odor_footprint.zip";
-		a.click();
-		URL.revokeObjectURL(url);
+		downloadBlob(blob, "odor_footprint.zip");
+	}
+
+	// Matches the stroke colors mapRenderLayers.js assigns on the map, so the
+	// exported file reads the same way in Google Earth as it does on screen.
+	const KML_COLORS = {
+		"1.5% Frequency": "#22c55e",
+		"3% Frequency": "#3b82f6",
+		"5% Frequency": "#ef4444",
+		"Source Location": "#f59e0b",
+	};
+
+	function escapeXml(str) {
+		return String(str).replace(
+			/[<>&'"]/g,
+			(c) =>
+				({
+					"<": "&lt;",
+					">": "&gt;",
+					"&": "&amp;",
+					"'": "&apos;",
+					'"': "&quot;",
+				})[c],
+		);
+	}
+
+	// KML colors are aabbggrr, the reverse byte order of a CSS #rrggbb hex.
+	function kmlColor(hex, alpha = 0xff) {
+		const [r, g, b] = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)];
+		return alpha.toString(16).padStart(2, "0") + b + g + r;
+	}
+
+	function ringToKmlCoordinates(ring) {
+		return ring.map(([lon, lat]) => `${lon},${lat},0`).join(" ");
+	}
+
+	function polygonPlacemark(feature) {
+		const name = feature.properties?.name ?? "";
+		const color = KML_COLORS[name] ?? "#888888";
+		const coords = ringToKmlCoordinates(feature.geometry.coordinates[0]);
+		return `<Placemark>
+			<name>${escapeXml(name)}</name>
+			<Style>
+				<LineStyle><color>${kmlColor(color)}</color><width>2</width></LineStyle>
+				<PolyStyle><color>${kmlColor(color, 0x40)}</color></PolyStyle>
+			</Style>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>${coords}</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>`;
+	}
+
+	/** KML export - the footprint and source polygons as styled placemarks,
+	 *  for tools (Google Earth, most desktop GIS) that read KML directly. */
+	function downloadKML() {
+		const { sourceLat, sourceLng, outputs } = appState.geoJSONData;
+		const features = [
+			...outputs.map.data.features,
+			...buildSourceGeoJSON(sourceLat, sourceLng).features,
+		];
+		const kml = `<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+		<name>Odor Footprint</name>
+		${features.map(polygonPlacemark).join("\n\t\t")}
+	</Document>
+</kml>`;
+		const blob = new Blob([kml], {
+			type: "application/vnd.google-earth.kml+xml",
+		});
+		downloadBlob(blob, "odor_footprint.kml");
 	}
 </script>
 
@@ -80,10 +168,17 @@
 	<!-- Screen-only controls -->
 	<div class="screen-only toolbar">
 		<button
+			class="kml-btn"
+			onclick={downloadKML}
+			disabled={!appState.mapIsUpToDate || !appState.geoJSONData?.outputs}
+			>Download KML</button
+		>
+		<button
 			class="shapefile-btn"
 			onclick={downloadShapefile}
 			disabled={!appState.mapIsUpToDate || !appState.geoJSONData?.outputs}
-		>Download Shapefile</button>
+			>Download Shapefile</button
+		>
 		<button class="print-btn" onclick={() => window.print()}
 			>Print / Save as PDF</button
 		>
@@ -180,7 +275,8 @@
 	}
 
 	.print-btn,
-	.shapefile-btn {
+	.shapefile-btn,
+	.kml-btn {
 		border: none;
 		border-radius: 4px;
 		padding: 0.6rem 1.2rem;
@@ -200,16 +296,19 @@
 		background-color: #0f2e26;
 	}
 
-	.shapefile-btn {
-		background-color: #1565c0;
+	.shapefile-btn,
+	.kml-btn {
+		background-color: #00897b;
 		color: white;
 	}
 
-	.shapefile-btn:hover:not(:disabled) {
-		background-color: #0d47a1;
+	.shapefile-btn:hover:not(:disabled),
+	.kml-btn:hover:not(:disabled) {
+		background-color: #00695c;
 	}
 
-	.shapefile-btn:disabled {
+	.shapefile-btn:disabled,
+	.kml-btn:disabled {
 		background-color: #90a4ae;
 		cursor: not-allowed;
 	}
