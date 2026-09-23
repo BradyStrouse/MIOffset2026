@@ -1,3 +1,25 @@
+<!--
+	MapView - the map, and everything drawn on it.
+
+	Owns the app's only Leaflet instance and every layer on it: the basemap,
+	a marker per building, the calculated centroid marker, and the odor
+	footprint GeoJSON. Buildings arrive either by drag from BuildingPalette or
+	by the click-to-place mode it arms; both land here.
+
+	Two things to know before editing:
+
+	- Leaflet objects are held in $state.raw, not $state. Deep proxying a
+	  Leaflet map breaks the library; raw still notifies effects when the
+	  top-level variable is reassigned.
+	- Because forms write straight to the building with no submit, edits are
+	  debounced here before they trigger work: AUTO_RUN_DEBOUNCE_MS for the
+	  wind fetch and model run, and a longer GEOCODE_DEBOUNCE_MS for the
+	  address lookup, which costs an external call and is only cosmetic.
+
+	The effects near the bottom are the camera. They are written to avoid
+	feedback loops with Leaflet's own move events - read the comments there
+	before changing one.
+-->
 <script>
 	// --- Imports ---
 	import { onMount, onDestroy, untrack } from "svelte";
@@ -21,6 +43,7 @@
 		MIN_ZOOM,
 		BUILDING_DRAG_TYPE,
 		BUILDING_LATLNG_PRECISION,
+		DEFAULT_ZOOM,
 	} from "$lib/state/defaultValues.svelte.js";
 	import { reverseGeocode } from "$lib/utils/map/reverseGeocode.js";
 	import LocationSelection from "./LocationSelection.svelte";
@@ -90,15 +113,16 @@
 
 	function initMap() {
 		const michiganBounds = L.latLngBounds(
-			L.latLng(40.55, -100.5),
-			L.latLng(48.3, -70.4),
+			L.latLng(40.55, -90.5),
+			L.latLng(48.3, -80.4),
 		);
 
 		map = L.map(mapContainer, {
 			minZoom: MIN_ZOOM,
 			maxZoom: MAX_ZOOM,
+			zoom: DEFAULT_ZOOM,
 			maxBounds: michiganBounds,
-			maxBoundsViscosity: 1.0, // 1.0 = fully rigid boundary, no rubber-band when panning to the edge
+			maxBoundsViscosity: 0.5, // 1.0 = fully rigid boundary, no rubber-band when panning to the edge
 		});
 
 		initBasemaps();

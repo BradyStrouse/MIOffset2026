@@ -1,3 +1,14 @@
+<!--
+	AnimalForm - the step config for an animal housing structure.
+
+	Mostly a data file: the steps array is handed to FormWizard, which does the
+	rendering. Species, animal type and housing type together pick the odor
+	emission factor out of animalData.json, so the three selects cascade -
+	each one's options come from the level above.
+
+	The effects at the bottom clear a child selection that a parent change has
+	made invalid, otherwise a stale housing type would survive a species switch.
+-->
 <script>
 	// --- Imports ---
 	import data from "$lib/data/animalData.json" with { type: "json" };

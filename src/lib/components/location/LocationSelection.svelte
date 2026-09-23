@@ -1,3 +1,16 @@
+<!--
+	LocationSelection - the "where is this site" controls, grouped.
+
+	Bundles AddressSearch, ManualCoords and the LocationUnknown notice, and
+	owns the geocoding call to /api/geocode that backs the address search.
+
+	Rendered in two places, which is what `collapsible` is for: the overlay on
+	the map is cramped so it folds away, while the side panel has room and
+	shows the controls outright.
+
+	Note these controls move the camera only. Buildings are positioned by
+	dragging their markers or by typing coordinates in BuildingPanel.
+-->
 <script>
 	// --- Imports ---
 	import ManualCoords from "$lib/components/location/ManualCoords.svelte";

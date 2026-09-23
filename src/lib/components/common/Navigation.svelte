@@ -1,3 +1,9 @@
+<!--
+	Navigation - the header links.
+
+	Home, Save, Help, About. Each marks itself active by comparing the current
+	pathname, so adding a route means adding a link here and nowhere else.
+-->
 <script>
 	// --- Imports ---
 	import { page } from "$app/state";
@@ -12,6 +18,13 @@
 		class="nav-link"
 		class:active={page.url.pathname === "/save"}>Save</a
 	>
+	<a
+		href="/help"
+		class="nav-link"
+		class:active={page.url.pathname === "/help"}
+	>
+		Help
+	</a>
 	<a
 		href="/about"
 		class="nav-link"

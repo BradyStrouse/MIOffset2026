@@ -35,9 +35,11 @@
 		"@sveltejs/kit": "^2.57.0",
 		"@vercel/analytics": "^2.0.1",
 		"geodesy": "^2.4.0",
+		"isomorphic-dompurify": "^4.2.0",
 		"jszip": "^3.10.1",
 		"leaflet": "^1.9.4",
 		"leaflet-kml": "^1.0.1",
+		"marked": "^18.0.12",
 		"node": "^22.22.3",
 		"type": "^2.7.3"
 	}

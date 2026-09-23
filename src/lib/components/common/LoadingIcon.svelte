@@ -1,3 +1,10 @@
+<!--
+	LoadingIcon - the spinner puck.
+
+	Shown over the map while a run is in flight. A model run fetches wind data
+	before it can compute, so the wait is long enough to need an indicator.
+	Presentation only - no props, no state.
+-->
 <div class="spinner-wrapper">
 	<div class="spinner"></div>
 </div>

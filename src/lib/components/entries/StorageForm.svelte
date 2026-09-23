@@ -1,3 +1,11 @@
+<!--
+	StorageForm - the step config for a manure storage.
+
+	Handed to FormWizard, same as the other two forms. Area here means the
+	exposed surface of the storage, not a building footprint, because that is
+	the surface odor leaves from. A cover is modelled by choosing a different
+	storage type rather than by reducing the area.
+-->
 <script>
 	import storageData from "$lib/data/storageData.json";
 	import animalData from "$lib/data/animalData.json";

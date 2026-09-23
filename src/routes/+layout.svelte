@@ -1,3 +1,11 @@
+<!--
+	Root layout - the shell every page renders inside.
+
+	Header (logo, beta tagline, Navigation), the page slot, and the footer.
+	Also the only place the global color tokens are declared: --color-spartan-green
+	and --color-kelly-green in :root here are what every component's styles read,
+	so a palette change happens once, in this file.
+-->
 <script>
 	// --- Imports & Props ---
 	import Navigation from "$lib/components/common/Navigation.svelte";

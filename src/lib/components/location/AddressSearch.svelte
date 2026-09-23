@@ -1,3 +1,11 @@
+<!--
+	AddressSearch - the address box and its submit/reset buttons.
+
+	Markup only. The geocoding lookup lives in the parent (LocationSelection)
+	and is passed in as `handleSubmit`, so this component stays reusable and
+	the network call has a single home. Reset clears the address and returns
+	the camera to the Michigan-wide default.
+-->
 <script>
 	// --- Imports ---
 	import { appState } from "$lib/state/appState.svelte.js";

@@ -10,7 +10,11 @@ const config = {
 		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
 		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-		adapter: adapter()
+		adapter: adapter(),
+
+		// Page text lives in /content as plain markdown so it can be edited
+		// without touching code. See EDITING-THE-SITE.md.
+		alias: { $content: "content" }
 	}
 };
 

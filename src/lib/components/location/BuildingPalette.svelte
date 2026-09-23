@@ -1,3 +1,13 @@
+<!--
+	BuildingPalette - the drag source for adding a building to the map.
+
+	Doubles as a click-to-arm control: HTML5 drag-and-drop never fires on touch
+	devices, so the same button toggles appState.placing and the next map click
+	consumes it. Dragging supersedes an armed click.
+
+	The dataTransfer.setData call in handleDragStart is not optional - Firefox
+	refuses to begin a drag without it.
+-->
 <script>
 	// --- Imports ---
 	import { appState, buildings } from "$lib/state/appState.svelte.js";

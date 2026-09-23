@@ -1,3 +1,11 @@
+<!--
+	Passphrase - the gate keeping the beta private.
+
+	Just the form. The check lives in +page.server.js, which compares against
+	the ACCESS_PASSPHRASE private env var, sets an httpOnly access_token cookie
+	good for 30 days, and redirects to ?returnTo. `form.incorrect` comes back
+	from that action on a failed attempt.
+-->
 <script>
 	let { form } = $props();
 </script>

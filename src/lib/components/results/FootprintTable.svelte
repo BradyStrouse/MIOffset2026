@@ -1,3 +1,12 @@
+<!--
+	FootprintTable - setback distances as numbers, one row per compass direction.
+
+	The written-record counterpart to the footprint drawn on the map. The model
+	returns its table as whitespace-delimited text rather than structured data,
+	so the parsing here drops two header lines and splits each remaining row
+	into direction plus the 1.5%, 3% and 5% distances. If the model's output
+	format changes, this is what breaks.
+-->
 <script>
 	import { appState } from "$lib/state/appState.svelte.js";
 

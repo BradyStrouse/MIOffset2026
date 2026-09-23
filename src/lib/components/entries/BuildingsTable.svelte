@@ -1,3 +1,14 @@
+<!--
+	BuildingsTable - every entered structure, one row each.
+
+	Column order deliberately follows the MI OFFSET 2018 Centroid Worksheet so
+	someone transferring a site from that spreadsheet can read the two side by
+	side. Also shows the calculated site centroid, which is the odor source the
+	footprint is drawn from.
+
+	Used twice: on the home page where a row click selects that building, and
+	on the save report with interactive={false} for a static printed table.
+-->
 <script>
 	// --- Imports ---
 	import animalData from "$lib/data/animalData.json";

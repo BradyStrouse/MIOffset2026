@@ -1,3 +1,13 @@
+<!--
+	Home - the tool itself.
+
+	Lays out the four working panels: BuildingPanel (edit the selected building),
+	MapView, and below them BuildingsTable plus FootprintTable once a run has
+	produced results. No logic of its own beyond the grid.
+
+	SSR is disabled for this route in +page.js because Leaflet needs a real
+	browser. State is restored from the ?data= permalink before MapView mounts.
+-->
 <script>
 	// --- Imports ---
 	import MapView from "$lib/components/location/MapView.svelte";

@@ -1,3 +1,16 @@
+<!--
+	BuildingPanel - the editor for whichever building is currently selected.
+
+	The left-hand column of the home page. Switches the structure between the
+	three kinds (animal housing, manure storage, manual emission factor),
+	renders the matching form, shows the derived emission factor, and allows
+	the coordinates to be typed rather than dragged.
+
+	Coordinate entry follows the same draft/commit pattern as ManualCoords:
+	values are held while typing and applied on blur or Enter, so a half-typed
+	"-8" never moves the marker. A committed edit re-centres the camera,
+	because a typed coordinate can easily land outside the current view.
+-->
 <script>
 	import AnimalForm from "./AnimalForm.svelte";
 	import StorageForm from "./StorageForm.svelte";
@@ -122,7 +135,7 @@
 									>{building.name || "Unnamed building"}</span
 								>
 								<span class="quick-oef"
-									>{format(deriveEmission(building).totalEmission)}</span
+									>{format(deriveEmission(building).totalEmission, 2)}</span
 								>
 							</button>
 						</li>

@@ -1,3 +1,11 @@
+<!--
+	ManualForm - the step config for entering an emission factor directly.
+
+	The escape hatch for a structure the standard categories do not cover, or
+	where a measured value is available. The number is used as-is and also
+	weights the structure's pull on the site centroid, so it is not merely
+	cosmetic.
+-->
 <script>
 	import FormWizard from "../common/FormWizard.svelte";
 

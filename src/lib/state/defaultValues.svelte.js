@@ -4,7 +4,7 @@
 export const DEFAULT_LAT = 44.347418;
 export const DEFAULT_LNG = -85.410177;
 
-export const DEFAULT_ZOOM = 6.5;
+export const DEFAULT_ZOOM = 10;
 export const MIN_ZOOM = 7;
 export const MAX_ZOOM = 18;
 export const LANDMARK_ZOOM = 12;

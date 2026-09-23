@@ -49,9 +49,9 @@ function buildGeoJSONData(
 	E: number,
 ) {
 	const thresholds = [
-		{ col: 0, name: "1.5% Frequency" },
-		{ col: 1, name: "3% Frequency" },
-		{ col: 2, name: "5% Frequency" },
+		{ col: 0, name: "Frequency: 1.5%" },
+		{ col: 1, name: "Frequency: 3%" },
+		{ col: 2, name: "Frequency: 5%" },
 	];
 
 	const features = thresholds.map(({ col, name }) => {

@@ -1,3 +1,9 @@
+<!--
+	CollapsibleButton - a show/hide wrapper with a slide transition.
+
+	Used where screen space is tight, chiefly the location controls overlaid on
+	the map. Open by default; the caller supplies the content as children.
+-->
 <script>
 	import { slide } from "svelte/transition";
 

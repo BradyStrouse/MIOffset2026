@@ -1,3 +1,14 @@
+<!--
+	FormWizard - renders a form from a step config array.
+
+	The shared engine behind AnimalForm, StorageForm and ManualForm: each of
+	those is just a list of step definitions, so the three stay consistent in
+	layout, help text and validation without repeating markup.
+
+	There is no submit. `formState` is bound to the selected building itself,
+	so every keystroke is already saved - which is also why MapView debounces
+	the model run rather than waiting for a commit.
+-->
 <script>
 	// --- Props ---
 	import NumberInput from "./NumberInput.svelte";

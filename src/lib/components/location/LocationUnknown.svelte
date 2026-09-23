@@ -1,3 +1,9 @@
+<!--
+	LocationUnknown - the "we couldn't find that address" notice.
+
+	Dismissible, and re-shows itself whenever the address changes so a second
+	failed search is not silent after the user has closed it once.
+-->
 <script>
 	import { appState } from "$lib/state/appState.svelte.js";
 	let visible = $state(true);

@@ -1,3 +1,14 @@
+<!--
+	ManualCoords - type a latitude and longitude to move the map.
+
+	For users working from surveyed coordinates rather than an address. These
+	move the camera only; a building's own position is edited in BuildingPanel.
+
+	Values are drafted while typing and committed on blur or Enter rather than
+	per keystroke - otherwise a half-typed "-8" would fly the camera off to
+	longitude -8 mid-entry. When not being edited, the fields mirror wherever
+	the camera currently is.
+-->
 <script>
 	// --- Imports ---
 	import { appState } from "$lib/state/appState.svelte.js";

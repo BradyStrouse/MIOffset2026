@@ -1,100 +1,30 @@
+<!--
+	About - the project description and credits.
+
+	A styled shell only. All the wording comes from /content/about.md and
+	/content/notice.md so it can be revised without touching code - see
+	EDITING-THE-SITE.md. The two style blocks below are the red beta banner
+	and the rule that turns a numbered list into the green step cards.
+-->
 <script>
+	// --- Imports ---
+	// The words on this page live in /content/about.md and /content/notice.md.
+	import Doc from "$lib/components/common/Doc.svelte";
+	import about from "$content/about.md?raw";
+	import notice from "$content/notice.md?raw";
 	import { usePermalink } from "$lib/utils/linkHandler.svelte.js";
 
 	usePermalink({ run: false });
 </script>
 
-<!-- Intro & Description -->
 <div class="about-container">
-	<div class="hero">
-		<h1>Michigan OFFSet 2026</h1>
-		<p class="subtitle">
-			A tool for evaluating odor setback distance to minimize odor nuisance complaints.
-		</p>
-	</div>
-
 	<div class="beta-notice">
-		<strong>This is a beta version.</strong>
-		<p>
-			MI OFFSET 2026 is still under active development and review. Results may change as the
-			model site is changed and refined, and features may be incomplete or behave unexpectedly. Please do not
-			rely on this site as the sole basis for siting, permitting, or other official decisions.
-		</p>
-		<p></p>
-		<p>
-			For now please use the official site 
-			<a href="https://legacy.enviroweather.msu.edu/legacy/mioffset/index.php">here</a>
-		</p>
+		<Doc source={notice} />
 	</div>
 
-	<section class="section">
-		<p>
-			Developed in cooperation with and sponsored by
-			<a href="https://www.canr.msu.edu/maaa/">
-				Michigan Alliance for Animal Agriculture (M-AAA)</a
-			>
-			and
-			<a href="http://www.michigan.gov/mdard/">
-				Michigan Department of Agriculture and Rural Development (MDARD)</a
-			>.
-		</p>
-
-		<p>
-			MI OFFSET is a planning tool for assessing potential odor impacts from livestock facilities.
-			Output from this tool, called an odor footprint, is a radial plot which represents
-			approximate distances that one must be away from the odor source to detect a noticeable or
-			stronger odor up to 1.5%, 3% and 5% of the time for each of the 16 compass directions. MI
-			OFFSET 2026 is a revised version of MI OFFSET 2018 that improves its ability to minimize odor
-			nuisance risk when siting new or expanding livestock operations.
-			<a class="pdf" href="MIOFFSET2018_technicaldocument.pdf"
-				>Technical details of the model are available in PDF format</a
-			>. MI OFFSET 2018 has been implemented in the
-			<a href="https://www.michigan.gov/mdard/0,4610,7-125-1599_1605---,00.html"
-				>Site Selection Generally Accepted Agricultural and Management Practices (GAAMPs)
-				document.</a
-			>
-		</p>
-
-		<p>
-			While MI OFFSET 2026 remains in beta, official decisions should continue to be made using
-			the existing 2018 MI OFFSET application, which is
-			<a href="https://legacy.enviroweather.msu.edu/legacy/mioffset/">still available here</a>.
-		</p>
-
-		<p>
-			You will receive odor footprint plots and a table of setback distances, and have an
-			opportunity to download the odor footprint on the map as a pdf along with the full
-			setback distance table
-		</p>
-	</section>
-
-	<!-- Usage Steps -->
-	<section class="section">
-		<h2>How to Use This Tool</h2>
-		<ol class="steps">
-			<li class="step">
-				<span class="step-number">1</span>
-				<div class="step-content">
-					<strong>Enter your location</strong>
-					<p>Search for your farm or facility location on the map. Click the map to place the marker on the odor source</p>
-				</div>
-			</li>
-			<li class="step">
-				<span class="step-number">2</span>
-				<div class="step-content">
-					<strong>Enter animal and waste storage details</strong>
-					<p>Provide information about animal units and waste storage at your facility.</p>
-				</div>
-			</li>
-			<li class="step">
-				<span class="step-number">3</span>
-				<div class="step-content">
-					<strong>View and download results</strong>
-					<p>Review your odor footprint and download it as a pdf or print it physically</p>
-				</div>
-			</li>
-		</ol>
-	</section>
+	<div class="about-body">
+		<Doc source={about} />
+	</div>
 </div>
 
 <style>
@@ -106,27 +36,7 @@
 		color: #333;
 	}
 
-	/* Hero */
-	.hero {
-		margin-bottom: 2rem;
-		padding-bottom: 1.5rem;
-		border-bottom: 2px solid var(--color-spartan-green);
-	}
-
-	h1 {
-		color: var(--color-spartan-green);
-		font-size: 2rem;
-		margin: 0 0 0.5rem 0;
-	}
-
-	.subtitle {
-		color: #555;
-		font-size: 1.1rem;
-		margin: 0;
-		font-style: italic;
-	}
-
-	/* Beta */
+	/* Beta banner */
 	.beta-notice {
 		background: #ffecebdf;
 		border: 1px solid #fd928a;
@@ -136,67 +46,49 @@
 		margin-bottom: 2rem;
 	}
 
-	.beta-notice strong {
+	.beta-notice :global(strong) {
 		display: block;
 		color: #920e0e;
 		margin-bottom: 0.25rem;
 	}
 
-	.beta-notice p {
-		margin: 0;
+	.beta-notice :global(p) {
 		font-size: 0.95rem;
 		color: #78350f;
 	}
 
-	/* Sections */
-	.section {
-		margin-bottom: 2rem;
-	}
-
-	h2 {
-		color: var(--color-spartan-green);
-		font-size: 1.25rem;
-		margin: 0 0 1rem 0;
-	}
-
-	p {
-		margin: 0 0 1rem 0;
-	}
-
-	/* Links */
-	a {
-		color: var(--color-kelly-green);
-		text-decoration: none;
-		transition: color 0.2s ease;
-	}
-
-	a:hover {
-		color: var(--color-spartan-green);
+	.beta-notice :global(a) {
+		color: #920e0e;
 		text-decoration: underline;
 	}
 
-	/* Steps */
-	.steps {
+	/* Numbered lists on this page render as the green step cards. */
+	.about-body :global(ol) {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
+		counter-reset: step;
 	}
 
-	.step {
-		display: flex;
-		align-items: flex-start;
-		gap: 1rem;
+	.about-body :global(ol > li) {
+		counter-increment: step;
+		position: relative;
+		margin-bottom: 0;
+		padding: 1rem 1rem 1rem 3.75rem;
 		background: #f8f9fa;
 		border: 1px solid #e9ecef;
 		border-left: 4px solid var(--color-spartan-green);
 		border-radius: 6px;
-		padding: 1rem;
 	}
 
-	.step-number {
+	.about-body :global(ol > li::before) {
+		content: counter(step);
+		position: absolute;
+		left: 1rem;
+		top: 1.1rem;
 		background: var(--color-spartan-green);
 		color: white;
 		font-weight: 700;
@@ -207,31 +99,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		flex-shrink: 0;
-		margin-top: 0.1rem;
-	}
-
-	.step-content strong {
-		display: block;
-		color: var(--color-spartan-green);
-		font-size: 1rem;
-		margin-bottom: 0.25rem;
-	}
-
-	.step-content p {
-		margin: 0;
-		font-size: 0.9rem;
-		color: #555;
 	}
 
 	/* Responsive */
 	@media (max-width: 640px) {
 		.about-container {
 			padding: 1rem;
-		}
-
-		h1 {
-			font-size: 1.5rem;
 		}
 	}
 </style>

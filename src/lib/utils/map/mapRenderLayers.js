@@ -24,9 +24,14 @@ export async function renderGEOJSON(map, showLegend = false) {
 
 	geoJSONLayer.eachLayer((l) => {
 		const name = l.feature?.properties?.name ?? null;
-		const oef = l.feature?.properties?.odor_emission_factor ?? "";
-		if (name)
-			l.bindTooltip(name + " " + oef, { sticky: true, direction: "top" });
+		let oef = l.feature?.properties?.odor_emission_factor ?? "";
+		oef = Math.round((oef + Number.EPSILON) * 100) / 100 // reduce oef to 2 decimal places of precision
+		if (name) {
+			l.bindTooltip(name + "<br/>OEF: " + oef, {
+				sticky: true,
+				direction: "top",
+			});
+		}
 
 		if (!l.setStyle) return;
 		const color = colors.pop();
