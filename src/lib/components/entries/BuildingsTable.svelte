@@ -20,7 +20,10 @@
 		focusBuilding,
 		removeBuilding,
 	} from "$lib/state/appState.svelte.js";
-	import { deriveEmission } from "$lib/utils/model/OdorEmissionFactor.js";
+	import {
+		deriveEmission,
+		normalizeTechnologies,
+	} from "$lib/utils/model/OdorEmissionFactor.js";
 	import { BUILDING_LATLNG_PRECISION } from "$lib/state/defaultValues.svelte.js";
 
 	let { interactive = true } = $props();
@@ -49,7 +52,10 @@
 
 	function techLabel(b) {
 		if (b.formType === "manual") return "-";
-		return animalData.TECH[b.technology]?.display || "-";
+		const labels = normalizeTechnologies(b.technology).map(
+			(tech) => animalData.TECH[tech]?.display ?? tech,
+		);
+		return labels.length ? labels.join(",\n") : "-";
 	}
 
 	function num(value, digits = 2) {
@@ -122,7 +128,7 @@
 						>
 						<td class="numeric">{num(building.area, 0)}</td>
 						<td class="numeric">{num(emission.oenRate, 0)}</td>
-						<td>{techLabel(building)}</td>
+						<td class="tech-cell">{techLabel(building)}</td>
 						<td class="numeric">{num(emission.odorControlFactor)}</td>
 						<td class="numeric">{num(emission.totalEmission)}</td>
 						{#if interactive}
@@ -243,6 +249,11 @@
 	.name-cell {
 		font-weight: 600;
 		color: #2c3e50;
+	}
+
+	/* techLabel joins with "\n" - render each technology on its own line */
+	.tech-cell {
+		white-space: pre-line;
 	}
 
 	tbody:not(.non-interactive)

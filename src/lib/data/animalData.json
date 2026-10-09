@@ -197,6 +197,16 @@
 			"key": "OilSprinkling",
 			"display": "Oil Sprinkling Inside Swine Barns",
 			"odorControlFactor": 0.5
+		},
+		"Vegetative Environmental Buffer": {
+			"key": "Vegetative Buffer",
+			"display": "Vegetative Environmental Buffer",
+			"odorControlFactor": 0.8
+		},
+		"Wet Scrubbers": {
+			"key": "Wet Scrubbers",
+			"display": "Wet Scrubbers Factor",
+			"odorControlFactor": 0.8
 		}
 	}
 }

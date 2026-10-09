@@ -2,6 +2,7 @@ import {
 	BUILDING_LATLNG_PRECISION,
 	DEFAULT_BUILDING,
 } from "$lib/state/defaultValues.svelte.js";
+import { normalizeTechnologies } from "$lib/utils/model/OdorEmissionFactor.js";
 
 const FORMAT_VERSION = 2;
 
@@ -39,7 +40,8 @@ export function encodeState(buildings, location) {
 			if (building.animalType) b.at = building.animalType;
 			if (building.housingType) b.ht = building.housingType;
 			if (building.storageType) b.st = building.storageType;
-			if (building.technology) b.tech = building.technology;
+			const tech = normalizeTechnologies(building.technology);
+			if (tech.length) b.tech = tech;
 			if (building.area !== "" && building.area != null) b.ar = building.area;
 			if (building.manualEmission != null) b.em = building.manualEmission;
 			return b;
@@ -60,7 +62,7 @@ function toBuilding(raw, index) {
 		animalType: raw.at ?? "",
 		housingType: raw.ht ?? "",
 		storageType: raw.st ?? "",
-		technology: raw.tech ?? "None",
+		technology: normalizeTechnologies(raw.tech), // older links store a single key
 		area: raw.ar ?? "",
 		manualEmission: raw.em ?? null,
 	};

@@ -46,13 +46,32 @@ export function lookupOenRate(building) {
 }
 
 /**
- * Odor Control Factor for a technology key. The worksheet falls back to 1.0
- * (no reduction) when no technology is selected, so we do the same.
- * @param {string} technology
+ * Normalizes a building's technology field to an array of TECH keys. Older
+ * buildings and permalinks stored a single key string, with "None" meaning
+ * no adjustment.
+ * @param {string[]|string|null|undefined} technology
+ * @returns {string[]}
+ */
+export function normalizeTechnologies(technology) {
+	const list = Array.isArray(technology) ? technology : [technology];
+	return list.filter((tech) => tech && tech !== "None");
+}
+
+/**
+ * Combined Odor Control Factor for the selected technologies. Factors are
+ * multiplied: each technology acts on what the previous ones let through, so
+ * Biofilter (0.1) + Wet Scrubbers (0.8) = 0.08. The worksheet falls back to
+ * 1.0 (no reduction) when no technology is selected, so we do the same.
+ * @param {string[]|string} technology
  */
 export function lookupOdorControlFactor(technology) {
-	if (!technology) return 1.0;
-	return animalData.TECH[technology]?.odorControlFactor ?? 1.0;
+	const factor = normalizeTechnologies(technology).reduce(
+		(product, tech) =>
+			product * (animalData.TECH[tech]?.odorControlFactor ?? 1.0),
+		1.0,
+	);
+	// rounding strips float noise, e.g. 0.1 * 0.3 = 0.030000000000000002
+	return Math.round(factor * 1e6) / 1e6;
 }
 
 /**

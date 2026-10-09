@@ -12,6 +12,7 @@
 <script>
 	// --- Props ---
 	import NumberInput from "./NumberInput.svelte";
+	import MultiSelect from "./MultiSelect.svelte";
 
 	// Renders a list of step definitions against a target object, writing each
 	// field straight back. There is no submit: the target is the selected
@@ -53,6 +54,15 @@
 						<option value={option.value}>{option.text}</option>
 					{/each}
 				</select>
+			{:else if step.type === "multiselect"}
+				<MultiSelect
+					id={step.key}
+					options={step.options}
+					bind:value={formState[step.key]}
+					placeholder={step.placeholder}
+					ariaLabel={step.label}
+					disabled={step.disabled ? step.disabled(formState) : false}
+				/>
 			{:else if step.type === "number"}
 				<NumberInput
 					id={step.key}

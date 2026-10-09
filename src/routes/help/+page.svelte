@@ -16,10 +16,6 @@
 	usePermalink({ run: false });
 </script>
 
-<svelte:head>
-	<title>Help - Michigan OFFSet 2026</title>
-</svelte:head>
-
 <div class="help-container">
 	<Doc source={help} />
 </div>

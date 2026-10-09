@@ -41,7 +41,7 @@ export const DEFAULT_BUILDING = {
 	animalType: "",
 	housingType: "",
 	storageType: "",
-	technology: "None",
+	technology: [], // TECH keys; always replaced, never mutated, so this array is safe to share
 	area: "",
 	manualEmission: null,
 };

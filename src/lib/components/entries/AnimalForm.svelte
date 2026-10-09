@@ -31,7 +31,10 @@
 				)
 			: [],
 	);
-	let technologies = $derived(Object.keys(data.TECH || {}));
+	// "None" is the absence of a selection, not an option to tick
+	let technologies = $derived(
+		Object.keys(data.TECH || {}).filter((tech) => tech !== "None"),
+	);
 
 	// --- Form Step Config ---
 	const odorSteps = $derived([
@@ -67,12 +70,12 @@
 		{
 			key: "technology",
 			label: "Technology Adjustment:",
-			type: "select",
+			type: "multiselect",
 			options: technologies.map((tech) => ({
 				value: tech,
-				text: data.TECH[tech].display,
-			})),
-			required: true,
+				text: data.TECH[tech].display,			})),
+			placeholder: "No technology adjustment",
+			helpText: "Select all that apply",
 		},
 		{
 			key: "area",

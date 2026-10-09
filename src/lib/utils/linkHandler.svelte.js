@@ -6,6 +6,7 @@ import {
 } from "$lib/state/appState.svelte.js";
 import { browser } from "$app/environment";
 import { encodeState, decodeState } from "$lib/utils/permalink.js";
+import { normalizeTechnologies } from "$lib/utils/model/OdorEmissionFactor.js";
 import { getAndRun } from "$lib/utils/model/runModel.svelte.ts";
 
 /**
@@ -74,7 +75,8 @@ function sameBuildings(current, incoming) {
 			b.animalType === other.animalType &&
 			b.housingType === other.housingType &&
 			b.storageType === other.storageType &&
-			b.technology === other.technology &&
+			normalizeTechnologies(b.technology).join() ===
+				normalizeTechnologies(other.technology).join() &&
 			String(b.area) === String(other.area) &&
 			b.manualEmission === other.manualEmission
 		);

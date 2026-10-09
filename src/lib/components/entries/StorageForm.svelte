@@ -14,7 +14,10 @@
 	// Edits the building in place - no draft, no submit.
 	let { building } = $props();
 
-	let technologies = $derived(Object.keys(animalData.TECH || {}));
+	// "None" is the absence of a selection, not an option to tick
+	let technologies = $derived(
+		Object.keys(animalData.TECH || {}).filter((tech) => tech !== "None"),
+	);
 
 	// --- Form Step Config ---
 	const storageSteps = $derived([
@@ -31,12 +34,12 @@
 		{
 			key: "technology",
 			label: "Technology Adjustment:",
-			type: "select",
+			type: "multiselect",
 			options: technologies.map((tech) => ({
 				value: tech,
-				text: animalData.TECH[tech].display,
-			})),
-			required: false,
+				text: animalData.TECH[tech].display,			})),
+			placeholder: "No technology adjustment",
+			helpText: "Select all that apply",
 		},
 		{
 			key: "area",
