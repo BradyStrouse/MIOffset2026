@@ -76,7 +76,8 @@ applies, so it is worth matching them as closely as your operation allows.
 
 For a lagoon, basin, tank or other storage, choose the storage type and enter the **surface area
 of this storage in square feet** - the exposed liquid or solid surface, since that is the surface
-odor leaves from. A covered storage uses a different storage type rather than a reduced area.
+odor leaves from. If the storage is covered, choose the cover under Technology Adjustment rather
+than reducing the area.
 
 ### Manual entry
 

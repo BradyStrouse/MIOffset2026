@@ -3,21 +3,28 @@
 
 	Handed to FormWizard, same as the other two forms. Area here means the
 	exposed surface of the storage, not a building footprint, because that is
-	the surface odor leaves from. A cover is modelled by choosing a different
-	storage type rather than by reducing the area.
+	the surface odor leaves from. A cover is modelled as a technology
+	adjustment rather than by reducing the area.
 -->
 <script>
 	import storageData from "$lib/data/storageData.json";
-	import animalData from "$lib/data/animalData.json";
 	import FormWizard from "../common/FormWizard.svelte";
+	import { technologyOptions } from "$lib/utils/model/OdorEmissionFactor.js";
 
 	// Edits the building in place - no draft, no submit.
 	let { building } = $props();
 
-	// "None" is the absence of a selection, not an option to tick
-	let technologies = $derived(
-		Object.keys(animalData.TECH || {}).filter((tech) => tech !== "None"),
-	);
+	// Greyed out when not listed for this storage type or conflicting with a pick
+	let technologies = $derived(technologyOptions(building));
+
+	// A storage type change clears the technology picks. `last` is plain (not
+	// $state) and carries the building, so switching buildings isn't a change.
+	let last = null;
+	$effect(() => {
+		const key = building.storageType;
+		if (last?.building === building && last.key !== key) building.technology = [];
+		last = { building, key };
+	});
 
 	// --- Form Step Config ---
 	const storageSteps = $derived([
@@ -35,11 +42,10 @@
 			key: "technology",
 			label: "Technology Adjustment:",
 			type: "multiselect",
-			options: technologies.map((tech) => ({
-				value: tech,
-				text: animalData.TECH[tech].display,			})),
+			options: technologies,
 			placeholder: "No technology adjustment",
 			helpText: "Select all that apply",
+			disabled: (state) => !state.storageType,
 		},
 		{
 			key: "area",

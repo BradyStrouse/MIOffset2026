@@ -11,7 +11,10 @@
 						"Dirt/Concrete lot": {
 							"key": "Dirt/Concrete lot",
 							"display": "Dirt/Concrete lot",
-							"oen_rate": 4
+							"oen_rate": 4,
+							"technologies": [
+								"Vegetative Environmental Buffer"
+							]
 						}
 					}
 				},
@@ -22,17 +25,40 @@
 						"Tie Stall, Scrape": {
 							"key": "Tie Stall, Scrape",
 							"display": "Tie Stall, Scrape",
-							"oen_rate": 2
+							"oen_rate": 2,
+							"technologies": [
+								"Vegetative Environmental Buffer"
+							]
 						},
 						"Free Stall, Scrape": {
 							"key": "Free Stall, Scrape",
 							"display": "Free Stall, Scrape",
-							"oen_rate": 6
+							"oen_rate": 6,
+							"technologies": [
+								"Vegetative Environmental Buffer",
+								"Biofilter",
+								"Geotextile",
+								"StrawOrNatural2in",
+								"StrawOrNatural4in",
+								"StrawOrNatural6in",
+								"StrawOrNatural8in",
+								"ImpermeableCover"
+							]
 						},
 						"Deep Pit Loose Housing": {
 							"key": "Deep Pit Loose Housing",
 							"display": "Deep Pit Loose Housing",
-							"oen_rate": 6
+							"oen_rate": 6,
+							"technologies": [
+								"Vegetative Environmental Buffer",
+								"Biofilter",
+								"Geotextile",
+								"StrawOrNatural2in",
+								"StrawOrNatural4in",
+								"StrawOrNatural6in",
+								"StrawOrNatural8in",
+								"ImpermeableCover"
+							]
 						}
 					}
 				}
@@ -49,12 +75,26 @@
 						"Deep Pit, Natural or Mech. Vent.": {
 							"key": "Deep Pit, Natural or Mech. Vent.",
 							"display": "Deep Pit, Natural or Mech. Vent.",
-							"oen_rate": 50
+							"oen_rate": 50,
+							"technologies": [
+								"Vegetative Environmental Buffer",
+								"Biofilter",
+								"OilSprinkling",
+								"Wet Scrubbers"
+							]
 						},
 						"Pull Plug, Natural or Mech. Vent.": {
 							"key": "Pull Plug, Natural or Mech. Vent.",
 							"display": "Pull Plug, Natural or Mech. Vent.",
-							"oen_rate": 30
+							"oen_rate": 30,
+							"technologies": [
+								"Vegetative Environmental Buffer",
+								"Biofilter",
+								"Geotextile",
+								"ImpermeableCover",
+								"OilSprinkling",
+								"Wet Scrubbers"
+							]
 						}
 					}
 				},
@@ -65,7 +105,15 @@
 						"Pull Plug, Natural or Mech. Vent.": {
 							"key": "Pull Plug, Natural or Mech. Vent.",
 							"display": "Pull Plug, Natural or Mech. Vent.",
-							"oen_rate": 14
+							"oen_rate": 14,
+							"technologies": [
+								"Vegetative Environmental Buffer",
+								"Biofilter",
+								"Geotextile",
+								"ImpermeableCover",
+								"OilSprinkling",
+								"Wet Scrubbers"
+							]
 						}
 					}
 				},
@@ -76,12 +124,28 @@
 						"Pull Plug, Natural or Mech. Vent.": {
 							"key": "Pull Plug, Natural or Mech. Vent.",
 							"display": "Pull Plug, Natural or Mech. Vent.",
-							"oen_rate": 42
+							"oen_rate": 42,
+							"technologies": [
+								"Vegetative Environmental Buffer",
+								"Biofilter",
+								"Geotextile",
+								"ImpermeableCover",
+								"OilSprinkling",
+								"Wet Scrubbers"
+							]
 						},
 						"Deep Pit, Natural or Mech. Vent.": {
 							"key": "Deep Pit, Natural or Mech. Vent.",
 							"display": "Deep Pit, Natural or Mech. Vent.",
-							"oen_rate": 42
+							"oen_rate": 42,
+							"technologies": [
+								"Vegetative Environmental Buffer",
+								"Biofilter",
+								"Geotextile",
+								"ImpermeableCover",
+								"OilSprinkling",
+								"Wet Scrubbers"
+							]
 						}
 					}
 				},
@@ -92,32 +156,60 @@
 						"Deep Pit, Natural or Mech. Vent.": {
 							"key": "Deep Pit, Natural or Mech. Vent.",
 							"display": "Deep Pit, Natural or Mech. Vent.",
-							"oen_rate": 34
+							"oen_rate": 34,
+							"technologies": [
+								"Vegetative Environmental Buffer",
+								"Biofilter",
+								"Geotextile",
+								"ImpermeableCover",
+								"OilSprinkling",
+								"Wet Scrubbers"
+							]
 						},
 						"Pull Plug, Natural or Mech. Vent.": {
 							"key": "Pull Plug, Natural or Mech. Vent.",
 							"display": "Pull Plug, Natural or Mech. Vent.",
-							"oen_rate": 20
+							"oen_rate": 20,
+							"technologies": [
+								"Vegetative Environmental Buffer",
+								"Biofilter",
+								"Geotextile",
+								"ImpermeableCover",
+								"OilSprinkling",
+								"Wet Scrubbers"
+							]
 						},
 						"Hoop Barn, Deep Bedded, Scrape": {
 							"key": "Hoop Barn, Deep Bedded, Scrape",
 							"display": "Hoop Barn, Deep Bedded, Scrape",
-							"oen_rate": 4
+							"oen_rate": 4,
+							"technologies": [
+								"Vegetative Environmental Buffer"
+							]
 						},
 						"Cargill (Open Front), Scrape": {
 							"key": "Cargill (Open Front), Scrape",
 							"display": "Cargill (Open Front), Scrape",
-							"oen_rate": 11
+							"oen_rate": 11,
+							"technologies": [
+								"Vegetative Environmental Buffer"
+							]
 						},
 						"Loose Housing, Scrape": {
 							"key": "Loose Housing, Scrape",
 							"display": "Loose Housing, Scrape",
-							"oen_rate": 11
+							"oen_rate": 11,
+							"technologies": [
+								"Vegetative Environmental Buffer"
+							]
 						},
 						"Open Concrete Lot, Scrape": {
 							"key": "Open Concrete Lot, Scrape",
 							"display": "Open Concrete Lot, Scrape",
-							"oen_rate": 11
+							"oen_rate": 11,
+							"technologies": [
+								"Vegetative Environmental Buffer"
+							]
 						}
 					}
 				}
@@ -134,7 +226,10 @@
 						"Litter": {
 							"key": "Litter",
 							"display": "Litter",
-							"oen_rate": 1
+							"oen_rate": 1,
+							"technologies": [
+								"Vegetative Environmental Buffer"
+							]
 						}
 					}
 				},
@@ -145,7 +240,10 @@
 						"Litter": {
 							"key": "Litter",
 							"display": "Litter",
-							"oen_rate": 2
+							"oen_rate": 2,
+							"technologies": [
+								"Vegetative Environmental Buffer"
+							]
 						}
 					}
 				}
@@ -166,32 +264,38 @@
 		"Geotextile": {
 			"key": "Geotextile",
 			"display": "Geotextile Cover (>=2.4mm or 1 inch)",
-			"odorControlFactor": 0.5
+			"odorControlFactor": 0.5,
+			"exclusiveGroup": "cover"
 		},
 		"StrawOrNatural2in": {
 			"key": "StrawOrNatural2in",
 			"display": "Straw or Natural Crust on Manure 2in Thick",
-			"odorControlFactor": 0.5
+			"odorControlFactor": 0.5,
+			"exclusiveGroup": "cover"
 		},
 		"StrawOrNatural4in": {
 			"key": "StrawOrNatural4in",
 			"display": "Straw or Natural Crust on Manure 4in Thick",
-			"odorControlFactor": 0.4
+			"odorControlFactor": 0.4,
+			"exclusiveGroup": "cover"
 		},
 		"StrawOrNatural6in": {
 			"key": "StrawOrNatural6in",
 			"display": "Straw or Natural Crust on Manure 6in Thick",
-			"odorControlFactor": 0.3
+			"odorControlFactor": 0.3,
+			"exclusiveGroup": "cover"
 		},
 		"StrawOrNatural8in": {
 			"key": "StrawOrNatural8in",
 			"display": "Straw or Natural Crust on Manure 8in Thick",
-			"odorControlFactor": 0.2
+			"odorControlFactor": 0.2,
+			"exclusiveGroup": "cover"
 		},
 		"ImpermeableCover": {
 			"key": "ImpermeableCover",
 			"display": "Impermeable Cover",
-			"odorControlFactor": 0.1
+			"odorControlFactor": 0.1,
+			"exclusiveGroup": "cover"
 		},
 		"OilSprinkling": {
 			"key": "OilSprinkling",
@@ -205,7 +309,7 @@
 		},
 		"Wet Scrubbers": {
 			"key": "Wet Scrubbers",
-			"display": "Wet Scrubbers Factor",
+			"display": "Wet Scrubbers",
 			"odorControlFactor": 0.8
 		}
 	}

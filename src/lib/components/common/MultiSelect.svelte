@@ -4,7 +4,8 @@
 	Looks like the native selects around it when closed, and summarises the
 	picks in the trigger so the form stays compact. `value` is an array of
 	option values. Toggling always assigns a fresh array rather than mutating,
-	so a default array shared between buildings is never altered.
+	so a default array shared between buildings is never altered. An option
+	with `dimmed: true` is greyed out as a warning but can still be ticked.
 -->
 <script>
 	let {
@@ -95,7 +96,7 @@
 	{#if open}
 		<div class="panel" role="listbox" aria-multiselectable="true">
 			{#each options as option (option.value)}
-				<label class="option">
+				<label class="option" class:dimmed={option.dimmed}>
 					<input
 						type="checkbox"
 						checked={value?.includes(option.value)}
@@ -181,6 +182,11 @@
 
 	.option:hover {
 		background-color: #f3faf3;
+	}
+
+	/* dimmed options can still be ticked */
+	.option.dimmed {
+		color: #aaa;
 	}
 
 	.option input {

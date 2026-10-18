@@ -9,6 +9,7 @@
 <script>
 	// --- Imports & Props ---
 	import Navigation from "$lib/components/common/Navigation.svelte";
+	import { APP_VERSION } from "$lib/version.js";
 
 	import { dev } from "$app/environment";
 	import { injectAnalytics } from "@vercel/analytics/sveltekit";
@@ -40,6 +41,7 @@
 			<a href="https://enviroweather.msu.edu">Enviroweather</a> | Michigan State
 			University
 		</p>
+		<p class="version">v{APP_VERSION}</p>
 	</footer>
 </div>
 
@@ -117,6 +119,11 @@
 	.app-footer p {
 		margin: 0.5rem 0;
 		font-size: 0.9rem;
+	}
+
+	.app-footer .version {
+		font-size: 0.75rem;
+		opacity: 0.7;
 	}
 
 	.app-footer a {

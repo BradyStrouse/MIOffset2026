@@ -1,6 +1,6 @@
 {
-	"name": "mioffset-betaai-site",
-	"version": "0.0.1",
+	"name": "mioffset",
+	"version": "0.9.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",

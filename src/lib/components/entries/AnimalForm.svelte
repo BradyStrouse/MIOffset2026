@@ -13,6 +13,7 @@
 	// --- Imports ---
 	import data from "$lib/data/animalData.json" with { type: "json" };
 	import FormWizard from "../common/FormWizard.svelte";
+	import { technologyOptions } from "$lib/utils/model/OdorEmissionFactor.js";
 
 	// Edits the building in place - no draft, no submit.
 	let { building } = $props();
@@ -31,10 +32,8 @@
 				)
 			: [],
 	);
-	// "None" is the absence of a selection, not an option to tick
-	let technologies = $derived(
-		Object.keys(data.TECH || {}).filter((tech) => tech !== "None"),
-	);
+	// Greyed out when not listed for this housing type or conflicting with a pick
+	let technologies = $derived(technologyOptions(building));
 
 	// --- Form Step Config ---
 	const odorSteps = $derived([
@@ -71,11 +70,10 @@
 			key: "technology",
 			label: "Technology Adjustment:",
 			type: "multiselect",
-			options: technologies.map((tech) => ({
-				value: tech,
-				text: data.TECH[tech].display,			})),
+			options: technologies,
 			placeholder: "No technology adjustment",
 			helpText: "Select all that apply",
+			disabled: (state) => !state.housingType,
 		},
 		{
 			key: "area",
@@ -96,6 +94,16 @@
 	// when species/animalType changes, the previously selected child value may no longer be valid
 	$effect(() => resetIfInvalid(animalTypeOptions, "animalType"));
 	$effect(() => resetIfInvalid(housingTypeOptions, "housingType"));
+
+	// Any change to species, animal type or housing type clears the technology
+	// picks. `last` is plain (not $state) so it only records, and carries the
+	// building so switching to another building doesn't count as a change.
+	let last = null;
+	$effect(() => {
+		const key = [building.species, building.animalType, building.housingType].join("|");
+		if (last?.building === building && last.key !== key) building.technology = [];
+		last = { building, key };
+	});
 </script>
 
 <FormWizard steps={odorSteps} bind:formState={building} />

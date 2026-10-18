@@ -3,27 +3,72 @@
 		"Concrete Tank": {
 			"key": "Concrete Tank",
 			"display": "Concrete Tank Above or Below Ground",
-			"oen_rate": 28
+			"oen_rate": 28,
+			"technologies": [
+				"Vegetative Environmental Buffer",
+				"Geotextile",
+				"StrawOrNatural2in",
+				"StrawOrNatural4in",
+				"StrawOrNatural6in",
+				"StrawOrNatural8in",
+				"ImpermeableCover"
+			]
 		},
 		"Crusted Manure Stockpile": {
 			"key": "Crusted Manure Stockpile",
 			"display": "Crusted Solid Manure Stockpile",
-			"oen_rate": 2
+			"oen_rate": 2,
+			"technologies": [
+				"Vegetative Environmental Buffer",
+				"Geotextile",
+				"StrawOrNatural2in",
+				"StrawOrNatural4in",
+				"StrawOrNatural6in",
+				"StrawOrNatural8in",
+				"ImpermeableCover"
+			]
 		},
 		"Multi Earthen Basin": {
 			"key": "Multi Earthen Basin",
 			"display": "Earthen Basin, Multiple Cells",
-			"oen_rate": 13
+			"oen_rate": 13,
+			"technologies": [
+				"Vegetative Environmental Buffer",
+				"Geotextile",
+				"StrawOrNatural2in",
+				"StrawOrNatural4in",
+				"StrawOrNatural6in",
+				"StrawOrNatural8in",
+				"ImpermeableCover"
+			]
 		},
 		"Single Earthen Basin": {
 			"key": "Single Earthen Basin",
 			"display": "Earthen Basin, Single Cells",
-			"oen_rate": 13
+			"oen_rate": 13,
+			"technologies": [
+				"Vegetative Environmental Buffer",
+				"Geotextile",
+				"StrawOrNatural2in",
+				"StrawOrNatural4in",
+				"StrawOrNatural6in",
+				"StrawOrNatural8in",
+				"ImpermeableCover"
+			]
 		},
 		"Steel Tank": {
 			"key": "Steel Tank",
 			"display": "Steel Tank Above or Below Ground",
-			"oen_rate": 28
+			"oen_rate": 28,
+			"technologies": [
+				"Vegetative Environmental Buffer",
+				"Geotextile",
+				"StrawOrNatural2in",
+				"StrawOrNatural4in",
+				"StrawOrNatural6in",
+				"StrawOrNatural8in",
+				"ImpermeableCover"
+			]
 		}
 	}
 }

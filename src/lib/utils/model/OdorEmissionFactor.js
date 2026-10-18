@@ -58,6 +58,65 @@ export function normalizeTechnologies(technology) {
 }
 
 /**
+ * TECH keys that apply to a building's housing or storage type, per the
+ * "Applicable Technologies" columns of the MI OFFSET animal housing and
+ * storage tables. Empty until the type is chosen.
+ * @param {object} building
+ * @returns {string[]}
+ */
+export function applicableTechnologies(building) {
+	const { formType, species, animalType, housingType, storageType } = building;
+
+	// Extracts the technologies from the animalData.json
+	if (formType === "animal") {
+		return (
+			animalData.SPECIES[species]?.animalTypes[animalType]?.housingType[
+				housingType
+			]?.technologies ?? []
+		);
+	}
+	// Extracts the technologies from storageData.json
+	if (formType === "storage") {
+		return storageData.STORAGE[storageType]?.technologies ?? [];
+	}
+	return [];
+}
+
+/**
+ * Every technology as a multiselect option, dimmed when it doesn't apply to
+ * the building's type or conflicts with one already picked (a manure surface
+ * only takes one cover). Dimming is only a hint, the user can still tick it.
+ * @param {object} building
+ * @returns {{value: string, text: string, dimmed: boolean}[]}
+ */
+export function technologyOptions(building) {
+	const applicable = applicableTechnologies(building);
+	const selected = normalizeTechnologies(building.technology);
+
+	// Groups that already have a pick, e.g. "cover" once any cover is ticked
+	const takenGroups = new Set();
+	for (const tech of selected) {
+		const group = animalData.TECH[tech]?.exclusiveGroup;
+		if (group) takenGroups.add(group);
+	}
+
+	// An unticked tech clashes if another tech from its group is already ticked
+	function conflictsWithSelection(tech) {
+		const group = animalData.TECH[tech].exclusiveGroup;
+		return !selected.includes(tech) && takenGroups.has(group);
+	}
+
+	// "None" is the absence of a selection, not an option to tick
+	const techKeys = Object.keys(animalData.TECH).filter((tech) => tech !== "None");
+
+	return techKeys.map((tech) => ({
+		value: tech,
+		text: animalData.TECH[tech].display,
+		dimmed: !applicable.includes(tech) || conflictsWithSelection(tech),
+	}));
+}
+
+/**
  * Combined Odor Control Factor for the selected technologies. Factors are
  * multiplied: each technology acts on what the previous ones let through, so
  * Biofilter (0.1) + Wet Scrubbers (0.8) = 0.08. The worksheet falls back to

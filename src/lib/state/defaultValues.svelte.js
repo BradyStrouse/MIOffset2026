@@ -49,7 +49,7 @@ export const DEFAULT_BUILDING = {
 // Fields wiped when a building's source type (tab) changes, so a building can
 // never carry stale animal data into a storage calculation.
 export const TYPE_SPECIFIC_FIELDS = {
-	animal: ["species", "animalType", "housingType"],
-	storage: ["storageType"],
+	animal: ["species", "animalType", "housingType", "technology"],
+	storage: ["storageType", "technology"],
 	manual: ["manualEmission"],
 };
