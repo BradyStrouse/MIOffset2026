@@ -5,7 +5,7 @@
 	picks in the trigger so the form stays compact. `value` is an array of
 	option values. Toggling always assigns a fresh array rather than mutating,
 	so a default array shared between buildings is never altered. An option
-	with `dimmed: true` is greyed out as a warning but can still be ticked.
+	with `dimmed: true` is greyed out and can't be ticked, only unticked.
 -->
 <script>
 	let {
@@ -59,7 +59,7 @@
 		open = true;
 		// move focus into the panel once it has rendered
 		requestAnimationFrame(() =>
-			root.querySelector(".panel input")?.focus(),
+			root.querySelector(".panel input:not(:disabled)")?.focus(),
 		);
 	}
 
@@ -96,10 +96,13 @@
 	{#if open}
 		<div class="panel" role="listbox" aria-multiselectable="true">
 			{#each options as option (option.value)}
+				{@const checked = value?.includes(option.value)}
 				<label class="option" class:dimmed={option.dimmed}>
+					<!-- a dimmed pick that's already ticked stays enabled so it can be unticked -->
 					<input
 						type="checkbox"
-						checked={value?.includes(option.value)}
+						{checked}
+						disabled={option.dimmed && !checked}
 						onchange={(e) => toggle(option.value, e.currentTarget.checked)}
 					/>
 					<span>{option.text}</span>
@@ -184,9 +187,14 @@
 		background-color: #f3faf3;
 	}
 
-	/* dimmed options can still be ticked */
+	/* dimmed options can't be ticked */
 	.option.dimmed {
 		color: #aaa;
+		cursor: not-allowed;
+	}
+
+	.option.dimmed:hover {
+		background-color: transparent;
 	}
 
 	.option input {

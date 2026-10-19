@@ -85,7 +85,7 @@ export function applicableTechnologies(building) {
 /**
  * Every technology as a multiselect option, dimmed when it doesn't apply to
  * the building's type or conflicts with one already picked (a manure surface
- * only takes one cover). Dimming is only a hint, the user can still tick it.
+ * only takes one cover). Dimmed options can't be ticked.
  * @param {object} building
  * @returns {{value: string, text: string, dimmed: boolean}[]}
  */
