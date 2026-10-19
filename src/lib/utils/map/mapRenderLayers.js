@@ -27,7 +27,7 @@ export async function renderGEOJSON(map, showLegend = false) {
 		let oef = l.feature?.properties?.odor_emission_factor ?? "";
 		oef = Math.round((oef + Number.EPSILON) * 100) / 100 // reduce oef to 2 decimal places of precision
 		if (name) {
-			l.bindTooltip(name + "<br/>OEF: " + oef, {
+			l.bindTooltip(name + "<br/>Total&nbsp;OEF: " + oef, {
 				sticky: true,
 				direction: "top",
 			});

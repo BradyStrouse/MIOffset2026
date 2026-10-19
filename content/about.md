@@ -30,7 +30,7 @@ download the odor footprint on the map as a pdf along with the full setback dist
 
 1. **Enter your location** - Search for your farm or facility location on the map. Click the map to
    place the marker on the odor source.
-2. **Enter animal and waste storage details** - Provide information about animal units and waste
+2. **Enter animal and waste storage details** - Provide information about animal housing and waste
    storage at your facility.
 3. **View and download results** - Review your odor footprint and download it as a pdf or print it
    physically.
